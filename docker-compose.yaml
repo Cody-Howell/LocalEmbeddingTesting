@@ -8,7 +8,7 @@ services:
       - "5044:5044"
     environment:
       - DOTNET_CONNECTION_STRING=Host=db;Database=pokeApi;Username=cody;Password=123456abc;
-    command: dotnet watch
+    command: dotnet run
   
   client:
     build:

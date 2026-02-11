@@ -1,23 +1,35 @@
-import './App.css'
+import "./App.css";
 
 function App() {
-
   return (
     <>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => console.log(fetch("http://api:5044"))}>
+        <button
+          onClick={async () => {
+            let response = await fetch("/api");
+            let text = await response.text();
+            console.log(text);
+          }}
+        >
+          Hello World
+        </button>
+        <button
+          onClick={async () => {
+            let response = await fetch("/api/health");
+            let text = await response.text();
+            console.log(text);
+          }}
+        >
           Healthcheck
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

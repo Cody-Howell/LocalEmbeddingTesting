@@ -1,0 +1,38 @@
+services:
+  api: 
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    working_dir: /app
+    volumes:
+      - ./api:/app
+    ports:
+      - "5044:5044"
+    environment:
+      - DOTNET_CONNECTION_STRING=Host=db;Database=pokeApi;Username=cody;Password=123456abc;
+    command: dotnet watch
+  
+  client:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules   # preserve container's node_modules
+    ports:
+      - "5173:5173"
+    command: npm run dev
+
+  db:
+   image: pgvector/pgvector:pg16-trixie
+   restart: always
+   shm_size: 128mb
+   environment:
+     POSTGRES_PASSWORD: 123456abc
+     POSTGRES_USER: cody
+     POSTGRES_DB: pokeApi
+   volumes:
+     - ./sql:/docker-entrypoint-initdb.d
+    #  - ./dbdata:/var/lib/postgresql/data
+   ports:
+     - 5432:5432
+  #  command: ["postgres", "-c", "log_statement=all"] # Enables verbose logging

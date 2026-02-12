@@ -2,11 +2,11 @@
 @text = One Five Four
 
 ###
-GET {{url}}/api
+# GET {{url}}/api
 ###
 GET {{url}}/api/items
 ###
-GET {{url}}/api/embed?query={{text}}
+# GET {{url}}/api/embed?query={{text}}
 ###
 GET {{url}}/api/add?query={{text}}
 ###

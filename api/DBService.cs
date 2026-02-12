@@ -38,6 +38,7 @@ public class DBService(IConfiguration config, LLamaEmbedder service) {
             ORDER BY embedding <-> @embedding::vector
             LIMIT @limit
             """";
-        return await conn.QueryAsync<SearchResult>(sql, new { embedding, limit });
+        var results = await conn.QueryAsync<SearchResult>(sql, new { embedding, limit });
+        return results.ToList();
     }
 }

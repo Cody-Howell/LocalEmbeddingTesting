@@ -23,7 +23,7 @@ app.MapGet("/api/embed", (string query, LLamaEmbedder service) => service.GetEmb
 app.MapGet("/api/add", (string query, DBService service) => service.AddItem(query));
 app.MapGet("/api/search", async (string query, DBService service, LLamaEmbedder embedder) => {
     var embedding = await embedder.GetEmbeddings(query);
-    return service.GetNearbyItems(embedding[0], 10);
+    return await service.GetNearbyItems(embedding[0], 10);
 });
 
 app.Run();

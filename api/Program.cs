@@ -5,12 +5,17 @@ using LLama.Common;
 var builder = WebApplication.CreateBuilder(args);
 string file = "./GGUF/nomic-embed-text-v2-moe.Q6_K.gguf";
 try {
+    Console.WriteLine($"Looking for model file at: {Path.GetFullPath(file)}");
+    Console.WriteLine($"File exists: {File.Exists(file)}");
+    
     var parameters = new ModelParams(file);
     var weights = LLamaWeights.LoadFromFile(parameters);
     var embedder = new LLamaEmbedder(weights, parameters);
     builder.Services.AddSingleton(embedder);
-} catch {
-    throw new Exception("Couldn't find weight model. Install the Q6_K model from this link: https://huggingface.co/nomic-ai/nomic-embed-text-v2-moe-GGUF and place it in a GGUF directory at the top level of /api.");
+} catch (Exception ex) {
+    Console.WriteLine($"Error loading model: {ex.Message}");
+    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+    throw new Exception($"Failed to load weight model: {ex.Message}", ex);
 }
 
 builder.Services.AddSingleton<DBService>();

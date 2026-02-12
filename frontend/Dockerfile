@@ -2,12 +2,17 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files
+COPY package*.json pnpm-lock.yaml ./
 
-RUN npm install
+# Install pnpm and dependencies
+RUN npm install -g pnpm
+RUN pnpm install
 
-# COPY . .
+# Copy source code
+COPY . .
 
 EXPOSE 5173
 
-CMD ["npm", "run", "dev"]
+# Run development server with host binding
+CMD ["pnpm", "run", "dev", "--host", "0.0.0.0"]

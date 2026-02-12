@@ -1,14 +1,49 @@
 services:
   db:
-   image: pgvector/pgvector:pg16-trixie
-   restart: always
-   shm_size: 128mb
-   environment:
-     POSTGRES_PASSWORD: 123456abc
-     POSTGRES_USER: cody
-     POSTGRES_DB: pokeApi
-   volumes:
-     - ./sql:/docker-entrypoint-initdb.d
-   ports:
-     - 5432:5432
-   command: ["postgres", "-c", "log_statement=all"] # Enables verbose logging
+    image: pgvector/pgvector:pg16-trixie
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: 123456abc
+      POSTGRES_USER: cody
+      POSTGRES_DB: pokeApi
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    command: ["postgres", "-c", "log_statement=all"] # Enables verbose logging
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 5044:5044
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5044
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_API_URL=http://api:5044
+    depends_on:
+      - api
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

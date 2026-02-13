@@ -10,3 +10,9 @@ This project shows an example use of the LlamaSharp library to run a model in-me
 4. Search. Try some things that are the same category to what you wrote. 
 
 This is in no way optimized for anything; just a proof of concept that you _can_ do local embeddings. 
+
+The model also isn't that great (you can see all the stats, like context window on Huggingface), but it works pretty fast. And is moderately okay at understanding semantics. You'd have to test out a few different models. 
+
+Also, it was _heck_ trying to get things integrated. Setting up the API, DB, and frontend went okay when I was running them all from the console, but trying to get the API with the model into a Dockerfile turned out to be much harder than expected, to which I have no idea why. 
+
+Oh, and if you do change models to test something else, you should just be able to change the file path in `Program.cs`and it should get whatever you put in. 

@@ -15,4 +15,4 @@ The model also isn't that great (you can see all the stats, like context window 
 
 Also, it was _heck_ trying to get things integrated. Setting up the API, DB, and frontend went okay when I was running them all from the console, but trying to get the API with the model into a Dockerfile turned out to be much harder than expected, to which I have no idea why. 
 
-Oh, and if you do change models to test something else, you should just be able to change the file path in `Program.cs`and it should get whatever you put in. 
+Oh, and if you do change models to test something else, you should just be able to change the file path in `Program.cs`and it should get whatever you put in. The only restriction is that it has to be a `.gguf` file with my current config of LlamaSharp (at least from my understanding; I just got something to work and stopped). 
